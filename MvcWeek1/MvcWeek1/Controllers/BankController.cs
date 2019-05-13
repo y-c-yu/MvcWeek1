@@ -12,13 +12,23 @@ namespace MvcWeek1.Controllers
 {
     public class BankController : Controller
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        //private 客戶資料Entities db = new 客戶資料Entities();
+        客戶銀行資訊Repository repo;
+        客戶資料Repository repoCust;
+
+        public BankController()
+        {
+            repo = RepositoryHelper.Get客戶銀行資訊Repository();
+            repoCust = RepositoryHelper.Get客戶資料Repository(repo.UnitOfWork);
+        }
 
         // GET: Bank
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
-            return View(客戶銀行資訊.ToList());
+            if (string.IsNullOrWhiteSpace(search))
+                return View(repo.All().Include(客 => 客.客戶資料));
+            else
+                return View(repo.Get客戶銀行資訊ListBy帳戶名稱(search).Include(p => p.客戶資料));
         }
 
         // GET: Bank/Details/5
@@ -28,7 +38,7 @@ namespace MvcWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = repo.Find(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -39,7 +49,7 @@ namespace MvcWeek1.Controllers
         // GET: Bank/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(repoCust.All(), "Id", "客戶名稱");
             return View();
         }
 
@@ -52,12 +62,12 @@ namespace MvcWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶銀行資訊.Add(客戶銀行資訊);
-                db.SaveChanges();
+                repo.Add(客戶銀行資訊);
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCust.All(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -68,12 +78,12 @@ namespace MvcWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = repo.Find(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCust.All(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -86,11 +96,11 @@ namespace MvcWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶銀行資訊).State = EntityState.Modified;
-                db.SaveChanges();
+                repo.UnitOfWork.Context.Entry(客戶銀行資訊).State = EntityState.Modified;
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCust.All(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -101,7 +111,7 @@ namespace MvcWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
+            客戶銀行資訊 客戶銀行資訊 = repo.Find(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -114,9 +124,9 @@ namespace MvcWeek1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
-            db.SaveChanges();
+            客戶銀行資訊 客戶銀行資訊 = repo.Find(id);
+            repo.Delete(客戶銀行資訊);
+            repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -124,7 +134,7 @@ namespace MvcWeek1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

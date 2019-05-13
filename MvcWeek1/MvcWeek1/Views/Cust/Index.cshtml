@@ -10,8 +10,10 @@
 </p>
 @using (Html.BeginForm("Index", "Cust", FormMethod.Get))
 {
+    @:客戶名稱：
     @Html.TextBox("search")
     <input type="submit" name="submit" value="search" />
+    <br /><br />
 }
 <table class="table">
     <tr>

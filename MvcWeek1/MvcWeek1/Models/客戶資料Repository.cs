@@ -11,7 +11,7 @@ namespace MvcWeek1.Models
             return this.All().Where(p => p.Id == id).FirstOrDefault();
         }
 
-        public IQueryable<客戶資料> Get客戶資料ListByName(string name)
+        public IQueryable<客戶資料> Get客戶資料ListBy客戶名稱(string name)
         {
             return this.All().Where(p => p.客戶名稱.Contains(name));
         }
