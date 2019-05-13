@@ -6,6 +6,16 @@ namespace MvcWeek1.Models
 {   
 	public  class 客戶聯絡人Repository : EFRepository<客戶聯絡人>, I客戶聯絡人Repository
 	{
+        public override IQueryable<客戶聯絡人> All()
+        {
+            return base.All().Where(p=>!p.IsDeleted);
+        }
+        public override void Delete(客戶聯絡人 entity)
+        {
+            entity.IsDeleted = true;
+            base.UnitOfWork.Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            //base.Delete(entity);
+        }
         public 客戶聯絡人 Find(int id)
         {
             return this.All().Where(p => p.Id == id).FirstOrDefault();

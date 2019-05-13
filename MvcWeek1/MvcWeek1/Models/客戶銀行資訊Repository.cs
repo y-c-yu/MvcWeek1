@@ -6,6 +6,16 @@ namespace MvcWeek1.Models
 {   
 	public  class 客戶銀行資訊Repository : EFRepository<客戶銀行資訊>, I客戶銀行資訊Repository
 	{
+        public override IQueryable<客戶銀行資訊> All()
+        {
+            return base.All().Where(p=>!p.IsDeleted);
+        }
+        public override void Delete(客戶銀行資訊 entity)
+        {
+            entity.IsDeleted = true;
+            base.UnitOfWork.Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            //base.Delete(entity);
+        }
         public 客戶銀行資訊 Find(int id)
         {
             return this.All().Where(p => p.Id == id).FirstOrDefault();
