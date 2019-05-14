@@ -3,6 +3,7 @@ namespace MvcWeek1.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using MvcWeek1.DataTypeAttributes;
     
     [MetadataType(typeof(客戶聯絡人MetaData))]
     public partial class 客戶聯絡人
@@ -30,6 +31,7 @@ namespace MvcWeek1.Models
         public string Email { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
+        [驗證手機號碼格式]
         public string 手機 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
