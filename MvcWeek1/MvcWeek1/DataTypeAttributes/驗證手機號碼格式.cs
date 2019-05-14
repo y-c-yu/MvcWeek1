@@ -21,7 +21,7 @@ namespace MvcWeek1.DataTypeAttributes
                 return true;
             }
 
-            string pattern = @"\d{4}-\d{6}";
+            string pattern = @"^\d{4}-\d{6}$";
 
             if(!Regex.IsMatch((string)value, pattern))
             {

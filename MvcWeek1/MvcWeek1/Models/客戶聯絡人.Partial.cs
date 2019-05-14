@@ -4,10 +4,22 @@ namespace MvcWeek1.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using MvcWeek1.DataTypeAttributes;
+    using System.Linq;
     
     [MetadataType(typeof(客戶聯絡人MetaData))]
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : IValidatableObject
     {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var repo = RepositoryHelper.Get客戶聯絡人Repository();
+            var contacts = repo.All().Where(p => p.客戶Id == this.客戶Id && p.Id != this.Id);
+            if (contacts.Any(p => p.Email.Trim().ToUpper() == this.Email.Trim().ToUpper()))
+            {
+                yield return new ValidationResult("同一個客戶下的聯絡人，其Email不能重複"
+                    , new string[] { "客戶Id", "Email" });
+            }
+            
+        }
     }
     
     public partial class 客戶聯絡人MetaData
