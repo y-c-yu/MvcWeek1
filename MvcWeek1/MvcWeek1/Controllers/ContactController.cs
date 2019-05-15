@@ -28,7 +28,7 @@ namespace MvcWeek1.Controllers
             if (string.IsNullOrWhiteSpace(search))
                 return View(repo.All().Include(客 => 客.客戶資料));
             else
-                return View(repo.Get客戶聯絡人ListBy姓名(search).Include(p => p.客戶資料));
+                return View(repo.Get客戶聯絡人ListBy職稱(search).Include(p => p.客戶資料));
         }
 
         // GET: Contact/Details/5

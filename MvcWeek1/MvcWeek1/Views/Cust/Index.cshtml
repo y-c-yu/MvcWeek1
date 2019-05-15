@@ -10,18 +10,23 @@
 </p>
 @using (Html.BeginForm("Index", "Cust", FormMethod.Get))
 {
-    @:客戶名稱：
-    @Html.TextBox("search")
-    <input type="submit" name="submit" value="search" />
+    @:客戶分類：
+    @Html.DropDownList("selector",
+        new SelectList(ViewBag.CategoryList, "Value", "Text"),
+        "All",
+        new { onchange = "form.submit();" });
     <br /><br />
 }
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.DisplayNameFor(model => model.客戶分類)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.統一編號)
+            @Html.ActionLink("客戶名稱", "Index", new { sortOrder = ViewBag.客戶名稱SortParam, selector = ViewBag.CustomerCategory })
+        </th>
+        <th>
+            @Html.ActionLink("統一編號", "Index", new { sortOrder = ViewBag.統一編號SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.電話)
@@ -41,6 +46,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.客戶分類)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.客戶名稱)
             </td>

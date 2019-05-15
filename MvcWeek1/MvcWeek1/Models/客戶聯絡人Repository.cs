@@ -25,6 +25,10 @@ namespace MvcWeek1.Models
         {
             return this.All().Where(p => p.姓名.Contains(name));
         }
+        public IQueryable<客戶聯絡人> Get客戶聯絡人ListBy職稱(string name)
+        {
+            return this.All().Where(p => p.職稱.Contains(name));
+        }
     }
 
 	public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>

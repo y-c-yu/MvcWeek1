@@ -18,14 +18,40 @@ namespace MvcWeek1.Controllers
         public CustController()
         {
             repo = RepositoryHelper.Get客戶資料Repository();
+
+            ViewBag.CategoryList = from item in repo.Get客戶分類List()
+                                   select new SelectListItem { Text = item, Value = item };
         }
         // GET: Cust
-        public ActionResult Index(string search)
+        public ActionResult Index(string selector, string sortOrder)
         {
-            if (string.IsNullOrWhiteSpace(search))
-                return View(repo.All());
-            else
-                return View(repo.Get客戶資料ListBy客戶名稱(search));
+            ViewBag.CustomerCategory = selector;
+            ViewBag.客戶名稱SortParam = string.IsNullOrWhiteSpace(sortOrder) ? "客戶名稱_desc" : "";
+            ViewBag.統一編號SortParam = sortOrder == "統一編號" ? "統一編號_desc" : "統一編號";
+
+            IQueryable <客戶資料> c1;
+            if (String.IsNullOrWhiteSpace(selector) || selector=="All")
+                c1 = repo.All();
+            else   
+                c1 = repo.Get客戶資料ListBy客戶分類(selector);
+
+            switch (sortOrder)
+            {
+                case "客戶名稱_desc":
+                    c1 = c1.OrderByDescending(s => s.客戶名稱);
+                    break;
+                case "統一編號":
+                    c1 = c1.OrderBy(s => s.統一編號);
+                    break;
+                case "統一編號_desc":
+                    c1 = c1.OrderByDescending(s => s.統一編號);
+                    break;
+                default:
+                    c1 = c1.OrderBy(s => s.客戶名稱);
+                    break;
+            }
+
+            return View(c1);
         }
 
         // GET: Cust/Details/5
@@ -54,7 +80,7 @@ namespace MvcWeek1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Create([Bind(Include = "Id,客戶分類,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +112,7 @@ namespace MvcWeek1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit([Bind(Include = "Id,客戶分類,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {

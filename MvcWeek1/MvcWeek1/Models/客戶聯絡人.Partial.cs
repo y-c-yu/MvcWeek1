@@ -39,7 +39,8 @@ namespace MvcWeek1.Models
         
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
         [Required]
-        [RegularExpression(@"^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$", ErrorMessage ="Email格式不正確")]
+        //[RegularExpression(@"^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$", ErrorMessage ="Email格式不正確")]
+        [EmailAddress(ErrorMessage = "Email格式不正確")]
         public string Email { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
