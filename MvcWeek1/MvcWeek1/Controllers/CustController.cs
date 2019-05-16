@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 using MvcWeek1.Models;
 
 namespace MvcWeek1.Controllers
@@ -147,6 +149,25 @@ namespace MvcWeek1.Controllers
             repo.Delete(客戶資料);
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
+        }
+
+        public FileResult Export()
+        {
+            var dt = new DataTable("Customers");
+            dt.Columns.AddRange(new DataColumn[2] { new DataColumn("客戶分類"), new DataColumn("客戶名稱") });
+            foreach (var item in repo.All().ToList())
+            {
+                dt.Rows.Add(item.客戶分類, item.客戶名稱);
+            }
+            using (var wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "客戶資料.xlsx");
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)
