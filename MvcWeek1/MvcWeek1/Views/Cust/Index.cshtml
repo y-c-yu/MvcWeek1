@@ -7,7 +7,6 @@
 <h2>Index</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Export", "Export")
 </p>
 @using (Html.BeginForm("Index", "Cust", FormMethod.Get))
 {
@@ -77,3 +76,32 @@
     }
 
 </table>
+@using (Html.BeginForm("Export", "Cust", FormMethod.Post))
+{
+    <input type="submit" value="EXCEL" />
+}
+<p>
+    <button id="export2">JSON</button>
+</p>
+
+@section Scripts{
+    <script>
+        var export2_onclick = function () {
+
+            $.ajax({
+                type: "post",
+                url: "@Url.Action("Export2","Cust")",
+                error: function () {
+                    alert("Error!");
+                },
+                success: function (data) {
+                    alert(JSON.stringify(data));
+                }
+            })
+        };
+
+        $(function () {
+            $("#export2").click(export2_onclick);
+        });
+    </script>
+}

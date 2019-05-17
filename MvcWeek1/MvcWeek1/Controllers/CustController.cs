@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ClosedXML.Excel;
 using MvcWeek1.Models;
+using Newtonsoft.Json;
 
 namespace MvcWeek1.Controllers
 {
@@ -151,14 +152,25 @@ namespace MvcWeek1.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public FileResult Export()
         {
-            var dt = new DataTable("Customers");
-            dt.Columns.AddRange(new DataColumn[2] { new DataColumn("客戶分類"), new DataColumn("客戶名稱") });
-            foreach (var item in repo.All().ToList())
-            {
-                dt.Rows.Add(item.客戶分類, item.客戶名稱);
-            }
+            var data = from p in repo.All()
+                       select new ViewModels.Customer()
+                       {
+                           Id = p.Id,
+                           客戶名稱 = p.客戶名稱,
+                           統一編號 = p.統一編號,
+                           電話 = p.電話,
+                           傳真 = p.傳真,
+                           地址 = p.地址,
+                           Email = p.Email,
+                           IsDeleted = p.IsDeleted,
+                           客戶分類 = p.客戶分類
+                       };
+
+            DataTable dt = Common.ConvertTo<ViewModels.Customer>(data.ToList());
+
             using (var wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(dt);
@@ -168,6 +180,26 @@ namespace MvcWeek1.Controllers
                     return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "客戶資料.xlsx");
                 }
             }
+        }
+
+        [HttpPost]
+        public JsonResult Export2()
+        {
+            var data = from p in repo.All()
+                       select new ViewModels.Customer()
+                       {
+                           Id = p.Id,
+                           客戶名稱 = p.客戶名稱,
+                           統一編號 = p.統一編號,
+                           電話 = p.電話,
+                           傳真 = p.傳真,
+                           地址 = p.地址,
+                           Email = p.Email,
+                           IsDeleted = p.IsDeleted,
+                           客戶分類 = p.客戶分類
+                       };
+
+            return Json(data);
         }
 
         protected override void Dispose(bool disposing)
