@@ -20,7 +20,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.客戶分類)
+            @Html.ActionLink("客戶分類", "Index", new { sortOrder = ViewBag.客戶分類SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
             @Html.ActionLink("客戶名稱", "Index", new { sortOrder = ViewBag.客戶名稱SortParam, selector = ViewBag.CustomerCategory })
@@ -29,16 +29,16 @@
             @Html.ActionLink("統一編號", "Index", new { sortOrder = ViewBag.統一編號SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.ActionLink("電話", "Index", new { sortOrder = ViewBag.電話SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.傳真)
+            @Html.ActionLink("傳真", "Index", new { sortOrder = ViewBag.傳真SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.地址)
+            @Html.ActionLink("地址", "Index", new { sortOrder = ViewBag.地址SortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParam, selector = ViewBag.CustomerCategory })
         </th>
         <th></th>
     </tr>

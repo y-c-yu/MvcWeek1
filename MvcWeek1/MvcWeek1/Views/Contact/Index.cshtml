@@ -19,22 +19,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.職稱)
+            @Html.ActionLink("職稱", "Index", new { sortOrder = ViewBag.職稱SortParam, search = ViewBag.CustomerTitle })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.姓名)
+            @Html.ActionLink("姓名", "Index", new { sortOrder = ViewBag.姓名SortParam, search = ViewBag.CustomerTitle })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSortParam, search = ViewBag.CustomerTitle })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.手機)
+            @Html.ActionLink("手機", "Index", new { sortOrder = ViewBag.手機SortParam, search = ViewBag.CustomerTitle })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.ActionLink("電話", "Index", new { sortOrder = ViewBag.電話SortParam, search = ViewBag.CustomerTitle })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+            @Html.ActionLink("客戶名稱", "Index", new { sortOrder = ViewBag.客戶名稱SortParam, search = ViewBag.CustomerTitle })
         </th>
         <th></th>
     </tr>

@@ -31,8 +31,13 @@ namespace MvcWeek1.Controllers
             ViewBag.CustomerCategory = selector;
             ViewBag.客戶名稱SortParam = string.IsNullOrWhiteSpace(sortOrder) ? "客戶名稱_desc" : "";
             ViewBag.統一編號SortParam = sortOrder == "統一編號" ? "統一編號_desc" : "統一編號";
+            ViewBag.電話SortParam = sortOrder == "電話" ? "電話_desc" : "電話";
+            ViewBag.傳真SortParam = sortOrder == "傳真" ? "傳真_desc" : "傳真";
+            ViewBag.地址SortParam = sortOrder == "地址" ? "地址_desc" : "地址";
+            ViewBag.EmailSortParam = sortOrder == "Email" ? "Email_desc" : "Email";
+            ViewBag.客戶分類SortParam = sortOrder == "客戶分類" ? "客戶分類_desc" : "客戶分類";
 
-            IQueryable <客戶資料> c1;
+            IQueryable<客戶資料> c1;
             if (String.IsNullOrWhiteSpace(selector) || selector=="All")
                 c1 = repo.All();
             else   
@@ -48,6 +53,36 @@ namespace MvcWeek1.Controllers
                     break;
                 case "統一編號_desc":
                     c1 = c1.OrderByDescending(s => s.統一編號);
+                    break;
+                case "電話":
+                    c1 = c1.OrderBy(s => s.電話);
+                    break;
+                case "電話_desc":
+                    c1 = c1.OrderByDescending(s => s.電話);
+                    break;
+                case "傳真":
+                    c1 = c1.OrderBy(s => s.傳真);
+                    break;
+                case "傳真_desc":
+                    c1 = c1.OrderByDescending(s => s.傳真);
+                    break;
+                case "地址":
+                    c1 = c1.OrderBy(s => s.地址);
+                    break;
+                case "地址_desc":
+                    c1 = c1.OrderByDescending(s => s.地址);
+                    break;
+                case "Email":
+                    c1 = c1.OrderBy(s => s.Email);
+                    break;
+                case "Email_desc":
+                    c1 = c1.OrderByDescending(s => s.Email);
+                    break;
+                case "客戶分類":
+                    c1 = c1.OrderBy(s => s.客戶分類);
+                    break;
+                case "客戶分類_desc":
+                    c1 = c1.OrderByDescending(s => s.客戶分類);
                     break;
                 default:
                     c1 = c1.OrderBy(s => s.客戶名稱);
